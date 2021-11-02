@@ -1,0 +1,22 @@
+{
+  "name": "api_node_js",
+  "version": "1.0.0",
+  "description": "Curso básico de APIs com Nodejs + Express + Mongodb",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rcdsg/Nodejs-Express-Mongodb.git"
+  },
+  "author": "Rodrigo Costa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rcdsg/Nodejs-Express-Mongodb/issues"
+  },
+  "homepage": "https://github.com/rcdsg/Nodejs-Express-Mongodb#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
