@@ -15,11 +15,11 @@ mongoose.connection.on('error', (err) => {
 });
 
 mongoose.connection.on('disconnected', () => {
-    console.log('desconectado ao banco de dados')
+    console.log('desconectado ao banco de dados');
 });
 
 mongoose.connection.on('connected', () => {
-    console.log('tudo conectado!')
+    console.log('tudo conectado!');
 });
 
 // Body parser
