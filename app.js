@@ -11,7 +11,7 @@ mongoose.connect(url, options);
 mongoose.set('useCreateIndex', true);
 
 mongoose.connection.on('error', (err) => {
-    console.log('erro na conexao:' + err);
+    console.log('Erro na conexão com o Banco de dados:' + err);
 });
 
 mongoose.connection.on('disconnected', () => {
