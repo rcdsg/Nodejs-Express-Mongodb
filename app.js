@@ -5,26 +5,32 @@ const bodyParser = require('body-parser');
 
 const url = 'mongodb+srv://rcdsg2021:Rc_200822@billing-cycles-backend.fggn0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
-const options = { reconnectTries: Number.MAX_VALUE, reconnectInterval: 500, poolSize: 5, useNewUrlParser: true };
+const options = {
+    //reconnectTries: Number.MAX_VALUE, //Não é suportado. Verificar outra opção de reconectar!
+    serverSelectionTimeoutMS: 500,
+    maxPoolSize: 5,
+    useNewUrlParser: true
+};
 
 mongoose.connect(url, options);
-mongoose.set('useCreateIndex', true);
+//mongoose.set('useCreateIndex', true);
 
 mongoose.connection.on('error', (err) => {
-    console.log('Erro na conexão com o Banco de dados:' + err);
-});
+    console.log('Erro na conexão com o Banco de dados: ' + err);
+})
 
 mongoose.connection.on('disconnected', () => {
-    console.log('desconectado ao banco de dados');
-});
+    console.log('Aplicação desconectada do Banco de Dados!');
+})
 
 mongoose.connection.on('connected', () => {
-    console.log('tudo conectado!');
-});
+    console.log('Aplicação conectada ao Banco de Dados!');
+})
 
-// Body parser
-app.use(bodyParser.urlencoded({ extended:false }));
-app.use(bodyParser.urlencoded.json());
+
+// Body Parser
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 
 const indexRoute = require('./routes/index');
