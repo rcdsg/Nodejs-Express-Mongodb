@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Users = require('../model/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+//Common Functions
+const createUserToken = (userId) => {
+    return jwt.sign({ id: userId}, 'front123', {expiresIn: '7d'});
+}
+
 
 //Refactoring - try - catch - GET
 router.get('/', async  (req, res) => {
@@ -29,7 +36,8 @@ router.post('/create', async (req, res) => {
 
         const user = await Users.create(req.body);
         user.password = undefined;
-        return res.send(user);
+
+        return res.send({user, token: createUserToken(user.id)});
         
     }
     catch (err) {
@@ -53,7 +61,7 @@ router.post('/auth', async (req, res) => {
         if (!password_ok) return res.send({error: 'Erro ao autenticar o usuário!'});
 
         user.password = undefined;
-        return res.send(user);
+        return res.send({user, token: createUserToken(user.id) });
 
     }
     catch (err) {
