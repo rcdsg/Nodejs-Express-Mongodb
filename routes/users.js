@@ -37,7 +37,7 @@ router.post('/create', async (req, res) => {
         const user = await Users.create(req.body);
         user.password = undefined;
 
-        return res.send({user, token: createUserToken(user.id)});
+        return res.status(201).send({user, token: createUserToken(user.id)});
         
     }
     catch (err) {
@@ -71,3 +71,23 @@ router.post('/auth', async (req, res) => {
 });
 
 module.exports = router;
+
+
+/*
+
+BEST STATUS CODES
+
+200 = OK
+201 = CREATED
+202 = ACCEPTED
+
+400 = BAD REQUEST
+401 = UNAUTHORIZED - AUTHENTICATION
+403 = FORBIDDEN - AUTORIZATION
+404 = NOT FOUND
+
+500 = INTERNAL SERVER ERROR
+501 = NOT IMPLEMENTED
+503 = SERVICE UNAVAILABLE
+
+*/
