@@ -3,10 +3,11 @@ const router = express.Router();
 const Users = require('../model/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const config = require('../config/config');
 
 //Common Functions
 const createUserToken = (userId) => {
-    return jwt.sign({ id: userId}, 'front123', {expiresIn: '7d'});
+    return jwt.sign({ id: userId}, config.jwt_pass, {expiresIn: config.jwt_expiresIn});
 }
 
 
@@ -17,7 +18,7 @@ router.get('/', async  (req, res) => {
     return res.send(users);
    } 
    catch (err){
-    return res.send({error: 'Erro na consulta de usuários!'});
+    return res.status(500).send({error: 'Erro na consulta de usuários!'});
     
    }
     
@@ -28,11 +29,11 @@ router.get('/', async  (req, res) => {
 router.post('/create', async (req, res) => {
     const { email, password } = req.body;
 
-    if (!email || !password) return res.send({ error: 'Dados insuficientes para serem cadastrados!'} );
+    if (!email || !password) return res.status(400).send({ error: 'Dados insuficientes para serem cadastrados!'} );
 
     try {
 
-        if ( await Users.findOne({ email }) ) return res.send({error: 'Usuário já existe!'});
+        if ( await Users.findOne({ email }) ) return res.status(400).send({error: 'Usuário já existe!'});
 
         const user = await Users.create(req.body);
         user.password = undefined;
@@ -41,7 +42,7 @@ router.post('/create', async (req, res) => {
         
     }
     catch (err) {
-        return res.send({ error : 'Usuário não encontrado!' });
+        return res.status(500).send({ error : 'Usuário não encontrado!' });
     }
 });
 
@@ -50,22 +51,22 @@ router.post('/create', async (req, res) => {
 router.post('/auth', async (req, res) => {
     const { email, password } = req.body;
 
-    if(!email || !password) return res.send({ error: 'Dados insuficientes!' });
+    if(!email || !password) return res.status(400).send({ error: 'Dados insuficientes!' });
 
     try{
         const user = await Users.findOne({ email }).select('+password');
-        if (!user) return res.send({ error: 'Usuário não registrado!'});
+        if (!user) return res.status(400).send({ error: 'Usuário não registrado!'});
 
         const password_ok = await bcrypt.compare(password, user.password);
 
-        if (!password_ok) return res.send({error: 'Erro ao autenticar o usuário!'});
+        if (!password_ok) return res.status(401).send({error: 'Erro ao autenticar o usuário!'});
 
         user.password = undefined;
         return res.send({user, token: createUserToken(user.id) });
 
     }
     catch (err) {
-        return res.send({ error: 'Erro ao buscar Usuário!' });
+        return res.status(500).send({ error: 'Erro ao buscar Usuário!' });
     }
 
 });

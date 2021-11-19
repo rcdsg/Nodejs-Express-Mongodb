@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const config = require('./config/config');
 
-const url = 'mongodb+srv://rcdsg2021:Rc_200822@billing-cycles-backend.fggn0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const url = config.db_string;
 
 const options = {
     //reconnectTries: Number.MAX_VALUE, //Não é suportado. Verificar outra opção de reconectar!
